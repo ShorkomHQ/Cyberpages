@@ -190,8 +190,52 @@
         </header>
         <!-- View Content -->
         <div class="flex-1 p-6 overflow-hidden relative">
+            <!-- Dashboard View -->
+            <div id="view-dashboard" class="h-full flex flex-col gap-6 animate-fade-in">
+                <div class="grid grid-cols-4 gap-4">
+                    <div class="glass-panel p-4 rounded-lg">
+                        <p class="text-xs text-slate-400 mb-1">Active UAVs (Digital Twin)</p>
+                        <h3 class="text-3xl font-bold text-cyan">03</h3>
+                    </div>
+                    <div class="glass-panel p-4 rounded-lg">
+                        <p class="text-xs text-slate-400 mb-1">C-UAS Detected Targets</p>
+                        <h3 class="text-3xl font-bold text-danger" id="dash-targets">01</h3>
+                    </div>
+                    <div class="glass-panel p-4 rounded-lg">
+                        <p class="text-xs text-slate-400 mb-1">SITL Memory Errors (Rust)</p>
+                        <h3 class="text-3xl font-bold text-primary">0.0%</h3>
+                    </div>
+                    <div class="glass-panel p-4 rounded-lg">
+                        <p class="text-xs text-slate-400 mb-1">Network Latency (UDP)</p>
+                        <h3 class="text-3xl font-bold text-cyan" id="dash-ping">12ms</h3>
+                    </div>
+                </div>
+                <div class="flex-1 grid grid-cols-3 gap-6">
+                    <div class="col-span-2 glass-panel p-4 rounded-lg flex flex-col">
+                        <h3 class="text-sm font-bold text-slate-300 border-b border-borderBg pb-2 mb-4"><i data-lucide="activity" class="inline w-4 h-4 mr-2 text-primary"></i>System Telemetry</h3>
+                        <div class="flex-1 flex items-center justify-center border border-borderBg/50 rounded bg-dark/50 relative overflow-hidden">
+                             <div class="absolute bottom-0 w-full h-1/2 bg-gradient-to-t from-primary/10 to-transparent"></div>
+                             <svg class="w-full h-full" preserveAspectRatio="none" viewBox="0 0 100 100">
+                                 <polyline points="0,80 10,75 20,85 30,60 40,70 50,40 60,55 70,30 80,45 90,20 100,25" fill="none" stroke="#10B981" stroke-width="0.5" vector-effect="non-scaling-stroke" />
+                                 <polyline points="0,90 15,85 30,88 45,70 60,75 75,60 90,65 100,50" fill="none" stroke="#06B6D4" stroke-width="0.5" vector-effect="non-scaling-stroke" stroke-dasharray="2,2"/>
+                             </svg>
+                             <div class="absolute inset-0 flex items-center justify-center pointer-events-none">
+                                 <p class="text-borderBg text-4xl font-bold opacity-30">TELEMETRY DATA LINK SECURE</p>
+                             </div>
+                        </div>
+                    </div>
+                    <div class="glass-panel p-4 rounded-lg flex flex-col">
+                        <h3 class="text-sm font-bold text-slate-300 border-b border-borderBg pb-2 mb-4"><i data-lucide="shield-alert" class="inline w-4 h-4 mr-2 text-alert"></i>Recent Alerts</h3>
+                        <div class="flex-1 overflow-y-auto space-y-3 text-xs" id="alert-feed">
+                            <div class="border-l-2 border-primary pl-2"><span class="text-slate-500">10:42:01</span> <span class="text-primary">INFO</span> VECTOR-MCC Sync Complete.</div>
+                            <div class="border-l-2 border-danger pl-2"><span class="text-slate-500">10:41:15</span> <span class="text-danger">WARN</span> Unidentified RCS=0.01m² at 4.2km.</div>
+                            <div class="border-l-2 border-cyan pl-2"><span class="text-slate-500">10:40:00</span> <span class="text-cyan">SYS</span> Ku-band RD03 initiated scanning.</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
             <!-- Digital Twin View (Map) -->
-            <div id="view-twin" class="h-full flex flex-col gap-4 animate-fade-in">
+            <div id="view-twin" class="hidden h-full flex flex-col gap-4 animate-fade-in">
                 <div class="flex-1 digital-twin-grid border border-borderBg rounded-lg p-4 relative overflow-hidden">
                     <div class="absolute top-4 left-4 glass-panel p-3 rounded z-10 min-w-[200px]">
                         <h4 class="text-xs text-primary mb-2 font-bold uppercase border-b border-primary/30 pb-1">Asset: Alpha 900 VTOL</h4>
@@ -202,12 +246,10 @@
                             <div class="flex justify-between"><span>CTRL:</span> <span class="text-primary">VECTOR-MCC (Auto)</span></div>
                         </div>
                     </div>
-                    <!-- Drone Icon on Map -->
                     <div id="drone-icon" class="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 transition-all duration-1000 ease-linear">
                         <i data-lucide="plane" class="w-6 h-6 text-primary drop-shadow-[0_0_5px_#10B981]"></i>
                         <div class="absolute top-full left-1/2 -translate-x-1/2 mt-1 px-1 bg-dark/80 text-[8px] text-cyan border border-cyan/30 rounded whitespace-nowrap">ID: ALPHA-01</div>
                     </div>
-                    <!-- Simulated Waypoints -->
                     <div class="absolute top-1/4 left-1/3 w-2 h-2 rounded-full bg-cyan/50 shadow-[0_0_5px_#06B6D4]"></div>
                     <div class="absolute top-1/3 left-2/3 w-2 h-2 rounded-full bg-cyan/50 shadow-[0_0_5px_#06B6D4]"></div>
                     <div class="absolute top-2/3 left-1/2 w-2 h-2 rounded-full bg-cyan/50 shadow-[0_0_5px_#06B6D4]"></div>
@@ -226,11 +268,229 @@
                     </div>
                 </div>
             </div>
-            <!-- ...other views unchanged for brevity... -->
+            <!-- Radar View (C-UAS) -->
+            <div id="view-radar" class="hidden h-full flex gap-6 animate-fade-in">
+                <div class="flex-1 glass-panel rounded-lg flex items-center justify-center p-8 relative overflow-hidden">
+                    <div class="absolute top-4 left-4 text-xs text-cyan opacity-50 z-10">
+                        AAT-Kuband-RD03<br>
+                        Max Range: 5km<br>
+                        Freq: Ku-Band Phased Array
+                    </div>
+                    <div class="w-[500px] max-w-full aspect-square relative">
+                        <div class="radar-container">
+                            <div class="radar-ring w-3/4 h-3/4"></div>
+                            <div class="radar-ring w-2/4 h-2/4"></div>
+                            <div class="radar-ring w-1/4 h-1/4"></div>
+                            <div class="absolute top-1/2 left-0 w-full h-[1px] bg-primary/30"></div>
+                            <div class="absolute top-0 left-1/2 w-[1px] h-full bg-primary/30"></div>
+                            <div class="radar-sweep"></div>
+                            <div class="target target-friendly" style="top: 30%; left: 40%;" title="Alpha 900 (Friendly)">
+                                <span class="absolute top-3 left-3 text-[10px] whitespace-nowrap opacity-70">A-900 (F)</span>
+                            </div>
+                            <div id="hostile-target" class="target target-hostile" style="top: 70%; left: 80%;" title="Unknown Drone (Hostile)">
+                                <span class="absolute top-3 left-3 text-[10px] whitespace-nowrap opacity-70">UAV_UNK (RCS:0.01)</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="w-80 flex flex-col gap-4">
+                    <div class="glass-panel p-4 rounded-lg">
+                        <h3 class="text-sm font-bold text-danger border-b border-borderBg pb-2 mb-3">Target Lock: UAV_UNK</h3>
+                        <div class="space-y-2 text-xs font-mono">
+                            <div class="flex justify-between"><span class="text-slate-500">Distance:</span> <span class="text-white" id="tgt-dist">4,210 m</span></div>
+                            <div class="flex justify-between"><span class="text-slate-500">Altitude:</span> <span class="text-white" id="tgt-alt">150 m</span></div>
+                            <div class="flex justify-between"><span class="text-slate-500">Speed:</span> <span class="text-white" id="tgt-spd">12 m/s</span></div>
+                            <div class="flex justify-between"><span class="text-slate-500">RCS:</span> <span class="text-white">0.01 m²</span></div>
+                            <div class="flex justify-between"><span class="text-slate-500">Tech:</span> <span class="text-cyan">TDOA+AOA Confirmed</span></div>
+                        </div>
+                    </div>
+                    <div class="glass-panel p-4 rounded-lg flex-1">
+                        <h3 class="text-sm font-bold text-slate-300 border-b border-borderBg pb-2 mb-3">Counter-Measures (Soft-Kill)</h3>
+                        <div class="space-y-3">
+                            <button onclick="triggerAction('GNSS Spoofing Activated', 'alert')" class="w-full btn-tactical py-2 text-alert flex items-center justify-center gap-2">
+                                <i data-lucide="satellite" class="w-4 h-4"></i> GNSS Spoofing
+                            </button>
+                            <button onclick="triggerJammer()" id="btn-jam" class="w-full btn-tactical py-2 text-danger flex items-center justify-center gap-2">
+                                <i data-lucide="wifi-off" class="w-4 h-4"></i> Engage RF Jammer
+                            </button>
+                            <button onclick="triggerAction('Net Interceptor Deployed', 'cyan')" class="w-full btn-tactical py-2 text-cyan flex items-center justify-center gap-2 opacity-50 cursor-not-allowed">
+                                <i data-lucide="crosshair" class="w-4 h-4"></i> Hard-Kill (Offline)
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!-- Terminal / SITL View -->
+            <div id="view-terminal" class="hidden h-full flex flex-col gap-4 animate-fade-in">
+                <div class="flex-1 glass-panel rounded-lg p-4 font-mono text-xs overflow-hidden flex flex-col bg-black/50">
+                    <div class="flex justify-between border-b border-borderBg pb-2 mb-2">
+                        <span class="text-slate-400">CyberDrone // SITL Console v2.4.1</span>
+                        <span class="text-primary text-xs">Rust Compiler: Running</span>
+                    </div>
+                    <div id="console-output" class="flex-1 overflow-y-auto space-y-1 text-slate-300">
+                        <div class="text-cyan terminal-text">> Initializing Simulation-in-the-Loop (SITL)...</div>
+                        <div>> Loading digital twin parameters (Muscat_Facility_A)</div>
+                        <div>> Connecting to Autopilot [VECTOR-600 Virtual]... <span class="text-primary">OK</span></div>
+                        <div>> Verifying Rust flight dynamics engine...</div>
+                        <div class="text-primary">> [RUST] Memory bounds check passed (0 vulnerabilities found).</div>
+                        <div>> Loading SORA risk assessment matrix...</div>
+                    </div>
+                </div>
+                <div class="glass-panel p-2 flex items-center gap-2 rounded">
+                    <span class="text-primary ml-2">></span>
+                    <input type="text" id="terminal-input" class="flex-1 bg-transparent border-none outline-none text-xs text-white font-mono placeholder-slate-600" placeholder="Enter diagnostic command (e.g., 'run test_gnss', 'sys check')..." onkeypress="handleTerminal(event)">
+                </div>
+            </div>
         </div>
     </main>
-    <!-- Toast Notification Container -->
     <div id="toast-container" class="fixed bottom-6 right-6 z-50 flex flex-col gap-2"></div>
-    <!-- ...scripts unchanged... -->
+    <script>
+        lucide.createIcons();
+        // Tab logic
+        const tabs = ['dashboard', 'radar', 'twin', 'terminal'];
+        function switchTab(activeTab) {
+            tabs.forEach(tab => {
+                const navEl = document.getElementById(`nav-${tab}`);
+                const viewEl = document.getElementById(`view-${tab}`);
+                if (tab === activeTab) {
+                    navEl.className = 'w-full flex items-center gap-3 p-3 rounded text-sm text-cyan bg-borderBg/30 border border-cyan/30 transition-all';
+                    viewEl.classList.remove('hidden');
+                } else {
+                    navEl.className = 'w-full flex items-center gap-3 p-3 rounded text-sm text-slate-400 hover:text-cyan hover:bg-borderBg/20 border border-transparent hover:border-cyan/30 transition-all';
+                    viewEl.classList.add('hidden');
+                }
+            });
+            lucide.createIcons();
+        }
+        // Default tab
+        switchTab('dashboard');
+        // Clock
+        setInterval(() => {
+            document.getElementById('clock').innerText = new Date().toLocaleTimeString('en-US', { hour12: false });
+        }, 1000);
+        // Telemetry simulation
+        setInterval(() => {
+            document.getElementById('dash-ping').innerText = (8 + Math.floor(Math.random() * 10)) + 'ms';
+        }, 2000);
+        // Radar target simulation
+        let hostileTop = 70, hostileLeft = 80, tgtDist = 4210, isJamming = false;
+        setInterval(() => {
+            if (!isJamming) {
+                hostileTop -= (Math.random() * 0.5);
+                hostileLeft -= (Math.random() * 0.5);
+                tgtDist -= 15;
+            } else {
+                hostileTop += Math.random() * 2;
+                hostileLeft += (Math.random() * 1) - 0.5;
+            }
+            if (hostileTop < 10) hostileTop = 90;
+            if (hostileLeft < 10) hostileLeft = 90;
+            const tgt = document.getElementById('hostile-target');
+            if (tgt) {
+                tgt.style.top = `${hostileTop}%`;
+                tgt.style.left = `${hostileLeft}%`;
+            }
+            if(!isJamming) {
+                document.getElementById('tgt-dist').innerText = `${tgtDist} m`;
+                document.getElementById('tgt-alt').innerText = `${Math.floor(150 + Math.random() * 10)} m`;
+                document.getElementById('tgt-spd').innerText = `${Math.floor(12 + Math.random() * 3)} m/s`;
+            } else {
+                document.getElementById('tgt-alt').innerText = `ERR m`;
+                document.getElementById('tgt-spd').innerText = `0 m/s`;
+            }
+        }, 1000);
+        // Digital twin drone movement
+        let dtAngle = 0;
+        setInterval(() => {
+            const dtDrone = document.getElementById('drone-icon');
+            const x = 50 + 10 * Math.cos(dtAngle);
+            const y = 50 + 10 * Math.sin(dtAngle);
+            dtDrone.style.left = `${x}%`;
+            dtDrone.style.top = `${y}%`;
+            dtDrone.style.transform = `translate(-50%, -50%) rotate(${dtAngle * (180/Math.PI)}deg)`;
+            dtAngle += 0.05;
+            document.getElementById('dt-alt').innerText = (120 + Math.random()).toFixed(1) + 'm';
+            document.getElementById('dt-spd').innerText = (45 + Math.random() * 2).toFixed(1) + 'km/h';
+        }, 1000);
+        // Terminal logic
+        const consoleLog = document.getElementById('console-output');
+        const logMessages = [
+            "> [SENSOR] Polling Ku-band RD03... [OK]",
+            "> [NAV] VECTOR-600 GNSS Denial Simulation: Active",
+            "> [AI] Running anomaly detection via Mu'een API... Clear",
+            "> [RUST] Garbage collection skipped, ownership verified.",
+            "> [SYS] Waiting for telemetry update..."
+        ];
+        function addLog(msg, type='normal') {
+            const div = document.createElement('div');
+            let colorClass = 'text-slate-300';
+            if (type === 'primary') colorClass = 'text-primary';
+            if (type === 'danger') colorClass = 'text-danger';
+            if (type === 'cyan') colorClass = 'text-cyan terminal-text';
+            div.className = colorClass;
+            div.innerText = msg;
+            consoleLog.appendChild(div);
+            consoleLog.scrollTop = consoleLog.scrollHeight;
+        }
+        setInterval(() => {
+            if (Math.random() > 0.6) {
+                const randomMsg = logMessages[Math.floor(Math.random() * logMessages.length)];
+                addLog(randomMsg);
+            }
+        }, 3000);
+        function handleTerminal(e) {
+            if (e.key === 'Enter') {
+                const input = e.target.value;
+                if (!input) return;
+                addLog(`> usr_cmd: ${input}`, 'cyan');
+                setTimeout(() => {
+                    if (input.includes('test_gnss')) {
+                        addLog('> Initiating GNSS interference protocol...', 'alert');
+                        setTimeout(() => addLog('> [VECTOR-600] Switched to Inertial/Visual Odometry.', 'primary'), 1000);
+                    } else if (input.includes('clear')) {
+                        consoleLog.innerHTML = '';
+                    } else {
+                        addLog('> Command executed successfully.', 'primary');
+                    }
+                }, 500);
+                e.target.value = '';
+            }
+        }
+        // Toasts
+        function triggerJammer() {
+            isJamming = true;
+            const btn = document.getElementById('btn-jam');
+            btn.innerHTML = '<i data-lucide="wifi" class="w-4 h-4"></i> Jamming Active';
+            btn.classList.replace('text-danger', 'text-alert');
+            btn.classList.add('animate-pulse');
+            const tgt = document.getElementById('hostile-target');
+            tgt.style.backgroundColor = '#F59E0B';
+            tgt.style.color = '#F59E0B';
+            addLog('> [DEFENSE] RF Jammer Engaged at target coordinates.', 'danger');
+            showToast('RF Jammer Engaged on UAV_UNK', 'danger');
+            lucide.createIcons();
+        }
+        function triggerAction(message, colorType) {
+            showToast(message, colorType);
+            addLog(`> [SYS] ${message}`, colorType);
+        }
+        function showToast(message, type) {
+            const toast = document.createElement('div');
+            let bgClass = 'bg-slate-800 border-slate-600';
+            let textClass = 'text-white';
+            let icon = 'info';
+            if(type === 'danger') { bgClass = 'bg-danger/20 border-danger'; textClass = 'text-danger'; icon = 'alert-triangle'; }
+            if(type === 'cyan') { bgClass = 'bg-cyan/20 border-cyan'; textClass = 'text-cyan'; icon = 'check-circle'; }
+            if(type === 'alert') { bgClass = 'bg-alert/20 border-alert'; textClass = 'text-alert'; icon = 'zap'; }
+            toast.className = `flex items-center gap-3 p-3 rounded-lg border ${bgClass} backdrop-blur-md shadow-lg animate-fade-in transition-all`;
+            toast.innerHTML = `<i data-lucide="${icon}" class="${textClass} w-5 h-5"></i> <span class="${textClass} text-sm font-bold">${message}</span>`;
+            document.getElementById('toast-container').appendChild(toast);
+            lucide.createIcons();
+            setTimeout(() => {
+                toast.style.opacity = '0';
+                setTimeout(() => toast.remove(), 500);
+            }, 3000);
+        }
+    </script>
 </body>
 </html>
