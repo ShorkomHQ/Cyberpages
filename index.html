@@ -11,135 +11,90 @@
     <!-- ... (all your code unchanged) ... -->
 </head>
 <body class="flex h-screen w-full">
-    <div class="container mx-auto my-8 bg-white dark:bg-gray-900 rounded-xl shadow-lg p-8 max-w-3xl text-right">
-        <h1 class="text-3xl font-bold text-blue-800 dark:text-blue-300 mb-6 text-center">تقرير فني: إنشاء نموذج تجريبي لمختبر CyberDrone الهجين</h1>
-
-        <div class="mb-8">
-            <h2 class="text-xl font-semibold text-blue-700 dark:text-blue-200 mb-2">1. الهدف من النموذج التجريبي</h2>
-            <p>
-                إثبات قدرة المنصة على دمج أنظمة الطيران الذاتي مع أنظمة الدفاع الجوي (C-UAS) في بيئة محاكاة عالية الدقة (Digital Twin)، مع استعراض تدفق البيانات السيادي والمؤمن سيبرانياً.
-            </p>
-        </div>
-
-        <div class="mb-8">
-            <h2 class="text-xl font-semibold text-blue-700 dark:text-blue-200 mb-2">2. الهيكلية التقنية للنموذج</h2>
-            <ol class="list-decimal pr-5 space-y-2">
-                <li>
-                    <b>محرك المحاكاة والبيئة الافتراضية (SITL Engine):</b>
-                    <ul class="list-disc pr-5">
-                        <li>المحرك: NVIDIA Isaac Sim أو Gazebo لمحاكاة فيزيائية دقيقة.</li>
-                        <li>برمجيات الطيران: PX4 Autopilot أو ArduPilot.</li>
-                        <li>البيئة الجغرافية: نموذج ثلاثي الأبعاد لمنطقة الذكاء الاصطناعي بمسقط أو منشأة الغاز بصور باستخدام بيانات GIS.</li>
-                    </ul>
-                </li>
-                <li>
-                    <b>العتاد المادي للنموذج (HITL Integration):</b>
-                    <ul class="list-disc pr-5">
-                        <li>وحدة التحكم: Pixhawk 6X أو VECTOR-600 متصلة بالحاسوب عبر MAVLink.</li>
-                        <li>وحدة الحوسبة الحافية: NVIDIA Jetson Orin Nano لمعالجة بيانات الذكاء الاصطناعي.</li>
-                    </ul>
-                </li>
-                <li>
-                    <b>واجهة القيادة والسيطرة (C2 Dashboard):</b>
-                    <ul class="list-disc pr-5">
-                        <li>React.js أو Vue.js مع Tailwind CSS للتصميم.</li>
-                        <li>Three.js لعرض الخريطة ثلاثية الأبعاد ومواقع الدرونز والرادارات.</li>
-                        <li>Chart.js لعرض التقارير الآنية (Telemetry).</li>
-                    </ul>
-                </li>
-            </ol>
-        </div>
-
-        <div class="mb-8">
-            <h2 class="text-xl font-semibold text-blue-700 dark:text-blue-200 mb-2">3. مراحل تنفيذ النموذج</h2>
-            <ol class="list-decimal pr-5 space-y-2">
-                <li>
-                    <b>المرحلة الأولى: بناء المحاكي البرمجي (SITL)</b>
-                    <ul class="list-disc pr-5">
-                        <li>تثبيت بيئة ROS2 كحلقة وصل بين الأنظمة.</li>
-                        <li>تطوير نموذج طائرة درون بمعايير فيزيائية مطابقة للواقع.</li>
-                        <li>برمجة مسارات طيران آلية لفحص خطوط الأنابيب أو مراقبة الحدود.</li>
-                    </ul>
-                </li>
-                <li>
-                    <b>المرحلة الثانية: دمج أنظمة الدفاع الجوي (C-UAS Simulation)</b>
-                    <ul class="list-disc pr-5">
-                        <li>محاكاة رادار Ku-band داخل البيئة الافتراضية لتوليد بيانات مسار عند اقتراب أي درون مجهول.</li>
-                        <li>تفعيل بروتوكول TDOA+AOA افتراضياً لتحديد موقع المُشغل.</li>
-                        <li>إضافة زر "التدخل الإلكتروني" (Jamming) لمحاكاة تحييد الهدف.</li>
-                    </ul>
-                </li>
-                <li>
-                    <b>المرحلة الثالثة: الأمن السيبراني والسيادة (Rust & AI)</b>
-                    <ul class="list-disc pr-5">
-                        <li>تطوير وحدة بلغة Rust لتشفير البيانات الصادرة من الدرون.</li>
-                        <li>ربط النموذج بواجهة API لنموذج AI لتحليل التهديدات الجوية وإعطاء توصيات تشغيلية بالعربية.</li>
-                    </ul>
-                </li>
-            </ol>
-        </div>
-
-        <div class="mb-8">
-            <h2 class="text-xl font-semibold text-blue-700 dark:text-blue-200 mb-2">4. قائمة المعدات والبرمجيات المطلوبة (BOM)</h2>
-            <div class="overflow-x-auto">
-            <table class="min-w-full border border-blue-200 dark:border-blue-700 mt-2">
-                <thead>
-                    <tr>
-                        <th class="border border-blue-200 dark:border-blue-700 bg-blue-50 dark:bg-blue-900">البند</th>
-                        <th class="border border-blue-200 dark:border-blue-700 bg-blue-50 dark:bg-blue-900">النوع</th>
-                        <th class="border border-blue-200 dark:border-blue-700 bg-blue-50 dark:bg-blue-900">الاستخدام</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <tr>
-                        <td class="border border-blue-200 dark:border-blue-700">محطة عمل</td>
-                        <td class="border border-blue-200 dark:border-blue-700">PC (GPU RTX 4080+)</td>
-                        <td class="border border-blue-200 dark:border-blue-700">تشغيل المحاكاة والتوأمة الرقمية</td>
-                    </tr>
-                    <tr>
-                        <td class="border border-blue-200 dark:border-blue-700">جهاز Autopilot</td>
-                        <td class="border border-blue-200 dark:border-blue-700">Pixhawk 6X / VECTOR</td>
-                        <td class="border border-blue-200 dark:border-blue-700">اختبار استجابة الأجهزة (HITL)</td>
-                    </tr>
-                    <tr>
-                        <td class="border border-blue-200 dark:border-blue-700">وحدة Jetson Orin</td>
-                        <td class="border border-blue-200 dark:border-blue-700">NVIDIA Edge AI</td>
-                        <td class="border border-blue-200 dark:border-blue-700">معالجة خوارزميات الكشف والتعرف</td>
-                    </tr>
-                    <tr>
-                        <td class="border border-blue-200 dark:border-blue-700">شاشة عرض عريضة</td>
-                        <td class="border border-blue-200 dark:border-blue-700">49-inch Ultrawide</td>
-                        <td class="border border-blue-200 dark:border-blue-700">واجهة القيادة والسيطرة للمستثمرين</td>
-                    </tr>
-                    <tr>
-                        <td class="border border-blue-200 dark:border-blue-700">لغات البرمجة</td>
-                        <td class="border border-blue-200 dark:border-blue-700">Rust, Python, C++</td>
-                        <td class="border border-blue-200 dark:border-blue-700">تطوير النظام والذكاء الاصطناعي</td>
-                    </tr>
-                </tbody>
-            </table>
+    <div class="flex flex-col md:flex-row w-full h-full">
+        <!-- Map & Drones Section -->
+        <div class="flex-1 flex flex-col items-center justify-center bg-blue-50 dark:bg-gray-800 rounded-xl m-4 p-4 relative overflow-hidden">
+            <h2 class="text-xl font-bold mb-2 text-blue-900 dark:text-blue-200">خريطة المختبر (تجريبية)</h2>
+            <div id="lab-map" class="relative w-full max-w-lg h-80 bg-gradient-to-br from-blue-200 to-blue-400 dark:from-gray-700 dark:to-gray-900 rounded-lg shadow-inner overflow-hidden">
+                <!-- Drones and radar icons will be placed here by JS -->
+                <img src="https://img.icons8.com/ios-filled/50/000000/drone.png" id="drone1" class="absolute transition-all duration-700" style="top:60px; left:60px; width:40px;" alt="drone"/>
+                <img src="https://img.icons8.com/ios-filled/50/ff0000/drone.png" id="intruder" class="absolute transition-all duration-700 hidden" style="top:180px; left:320px; width:40px;" alt="intruder drone"/>
+                <img src="https://img.icons8.com/ios-filled/50/1e40af/radar.png" class="absolute" style="top:120px; left:200px; width:48px;" alt="radar"/>
+                <div id="jam-effect" class="absolute w-full h-full bg-red-400 bg-opacity-30 hidden" style="top:0; left:0;"></div>
+            </div>
+            <div class="flex gap-2 mt-4">
+                <button onclick="startMission()" class="bg-blue-700 text-white px-4 py-2 rounded hover:bg-blue-900">بدء المهمة</button>
+                <button onclick="showIntruder()" class="bg-yellow-500 text-white px-4 py-2 rounded hover:bg-yellow-700">محاكاة درون معادٍ</button>
+                <button onclick="activateJamming()" class="bg-red-600 text-white px-4 py-2 rounded hover:bg-red-800">تشويش إلكتروني</button>
+                <button onclick="resetDemo()" class="bg-gray-400 text-white px-4 py-2 rounded hover:bg-gray-600">إعادة تعيين</button>
             </div>
         </div>
-
-        <div class="mb-8">
-            <h2 class="text-xl font-semibold text-blue-700 dark:text-blue-200 mb-2">5. سيناريو العرض (Demo Script)</h2>
-            <div class="bg-gray-100 dark:bg-gray-800 rounded-lg p-4 mt-2">
-                <ol class="list-decimal pr-5 space-y-1">
-                    <li>البداية: عرض خريطة "مسقط" ثلاثية الأبعاد مع ظهور الدرونز الخاصة بالشركة وهي تنفذ مهمة فحص روتينية.</li>
-                    <li>الاختبار: ظهور درون "معادٍ" (غير مصرح له) يقترب من منطقة محظورة (Geo-fence).</li>
-                    <li>الاستجابة: الرادار (الافتراضي) يكشف الهدف، ويقوم النظام بتنبيه المشغل عبر واجهة C2.</li>
-                    <li>التحييد: يقوم المشغل بتفعيل "التشويش الذكي"؛ وتظهر النتائج فوراً بتعطل مسار الدرون المعادي وسقوطه افتراضياً.</li>
-                    <li>التقرير: استخراج تقرير آلي من مُعين AI يحلل الحادثة ويقترح إجراءات أمنية مستقبلية.</li>
-                </ol>
+        <!-- Telemetry & Log Section -->
+        <div class="w-full md:w-80 flex flex-col justify-between bg-white dark:bg-gray-900 rounded-xl m-4 p-4 shadow-lg">
+            <div>
+                <h2 class="text-lg font-bold mb-2 text-blue-900 dark:text-blue-200">البيانات اللحظية (Telemetry)</h2>
+                <ul class="space-y-1 text-sm" id="telemetry">
+                    <li>البطارية: <span id="battery">98%</span></li>
+                    <li>الرياح: <span id="wind">7 كم/س</span></li>
+                    <li>الحالة: <span id="status">جاهز</span></li>
+                </ul>
             </div>
-        </div>
-
-        <div class="mb-8">
-            <h2 class="text-xl font-semibold text-blue-700 dark:text-blue-200 mb-2">6. الخاتمة والتوصية</h2>
-            <div class="bg-green-50 dark:bg-green-900 border border-green-200 dark:border-green-700 rounded-lg p-4 mt-2">
-                لتحقيق أفضل أثر بأقل المبالغ، يُنصح بالبدء بـ النموذج الافتراضي (SITL) بالكامل، ثم دمج جهاز تحكم حقيقي واحد (HITL) لإثبات الجدارة التقنية. هذا النموذج سيكون كافياً لإقناع "صندوق عُمان المستقبل" بأن المشروع يمتلك البنية التحتية البرمجية الجاهزة للتوسع بمجرد ضخ الاستثمار المالي (180,000 ر.ع).
+            <div class="mt-6">
+                <h2 class="text-lg font-bold mb-2 text-blue-900 dark:text-blue-200">سجل الأحداث</h2>
+                <div id="event-log" class="bg-gray-100 dark:bg-gray-800 rounded p-2 h-40 overflow-y-auto text-xs"></div>
             </div>
         </div>
     </div>
+    <script>
+        // Demo logic
+        let missionStarted = false;
+        let intruderVisible = false;
+        let jammed = false;
+        function logEvent(msg) {
+            const log = document.getElementById('event-log');
+            log.innerHTML = `<div>${new Date().toLocaleTimeString('ar-EG')}: ${msg}</div>` + log.innerHTML;
+        }
+        function startMission() {
+            missionStarted = true;
+            document.getElementById('status').innerText = 'مهمة جارية';
+            document.getElementById('drone1').style.top = '120px';
+            document.getElementById('drone1').style.left = '300px';
+            logEvent('بدأت الدرون مهمة الفحص الروتيني.');
+        }
+        function showIntruder() {
+            if (!missionStarted) { logEvent('يجب بدء المهمة أولاً.'); return; }
+            intruderVisible = true;
+            document.getElementById('intruder').classList.remove('hidden');
+            logEvent('تم رصد درون معادٍ يقترب من المنطقة المحظورة!');
+            document.getElementById('status').innerText = 'تهديد مكتشف';
+        }
+        function activateJamming() {
+            if (!intruderVisible) { logEvent('لا يوجد هدف للتشويش عليه.'); return; }
+            jammed = true;
+            document.getElementById('jam-effect').classList.remove('hidden');
+            setTimeout(() => {
+                document.getElementById('intruder').style.top = '260px';
+                document.getElementById('intruder').style.left = '100px';
+                document.getElementById('status').innerText = 'تم التشويش';
+                logEvent('تم تفعيل التشويش الإلكتروني وتعطيل الدرون المعادي.');
+                setTimeout(() => {
+                    document.getElementById('jam-effect').classList.add('hidden');
+                }, 800);
+            }, 700);
+        }
+        function resetDemo() {
+            missionStarted = false;
+            intruderVisible = false;
+            jammed = false;
+            document.getElementById('drone1').style.top = '60px';
+            document.getElementById('drone1').style.left = '60px';
+            document.getElementById('intruder').classList.add('hidden');
+            document.getElementById('intruder').style.top = '180px';
+            document.getElementById('intruder').style.left = '320px';
+            document.getElementById('status').innerText = 'جاهز';
+            document.getElementById('event-log').innerHTML = '';
+            document.getElementById('jam-effect').classList.add('hidden');
+        }
+    </script>
 </body>
 </html>
